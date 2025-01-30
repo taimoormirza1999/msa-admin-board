@@ -194,7 +194,11 @@ const menuGroups = [
           </svg>
         ),
         label: "Blog",
-        route: "/settings",
+        route: "/blogs",
+        children: [
+          { label: "Add New Blog", route: "/add-new-blog" },
+          { label: "Add New Blog with AI", route: "/add-new-blog-ai" },
+        ],
       },
     ],
   },
