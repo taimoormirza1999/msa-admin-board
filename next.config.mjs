@@ -5,11 +5,11 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'msa-club.com',
-            port: '', 
-            pathname: '/assets/**', 
+            hostname: '**',
           },
          
+          
+          // Add more domains here if needed
         ],
       },
 };

@@ -3,9 +3,9 @@ import EditorJS from '@editorjs/editorjs';
 import ImageTool from '@editorjs/image'; 
 import EditorjsList from '@editorjs/list'; 
 import Header from '@editorjs/header'; 
-import Paragraph from '@editorjs/paragraph';  // Import Paragraph Tool
-import Raw from '@editorjs/raw';  // Import Raw HTML Tool
-import Embed from '@editorjs/embed';  // Import Embed Tool
+import Paragraph from '@editorjs/paragraph';  
+import Raw from '@editorjs/raw';  
+import Embed from '@editorjs/embed'; 
 
 const Editor = ({ onChange, data }) => {
   const editorRef = useRef(null);
@@ -122,7 +122,7 @@ const Editor = ({ onChange, data }) => {
 
   return (
     <div
-      className="editor-js rouded h-[40rem] overflow-y-auto rounded border border-stroke bg-gray/50 dark:bg-transparent"
+      className="editor-js rounded border  border-stroke bg-gray/50 dark:bg-transparent"
       ref={editorRef}
     ></div>
   );

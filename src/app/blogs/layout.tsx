@@ -2,9 +2,9 @@
 import React from 'react';
 
 export const metadata = {
-  title: "Next.js Settings | TailAdmin - Next.js Dashboard Template",
+  title: "MSA-Academy | Dashboard",
   description:
-    "This is Next.js Settings page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "MSA-Academy | Dashboard",
 };
 interface SettingsLayoutProps {
     children: React.ReactNode; // Explicitly define the type for children
