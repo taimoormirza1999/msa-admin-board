@@ -4,37 +4,42 @@ import Image from "next/image";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import InputField from "@/components/FormElements/InputField";
 import MultipleValueTextInput from "@/components/FormElements/MultipleValueTextInput";
-import React, { useState } from "react";
+import React, { useState,useCallback } from "react";
 import FileUploadInput from "@/components/FormElements/FileUploadInput";
 import Editor from "@/components/FormElements/Editor";
 import axios from "axios";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Settings = () => {
   const [categories, setCategories] = useState(['Animation Courses']);
   const [metaTags, setMetaTags] = useState(['Courses']);
-  const [metaTitle, setMetaTitle] = useState("");
-  const [metaDescription, setMetaDescription] = useState("");
+  const [metaTitle, setMetaTitle] = useState("Learn Drawing & Animation: A Beginner's Guide to Creative Expression");
+  const [metaDescription, setMetaDescription] = useState("Unleash your creative potential with our step-by-step guide on learning drawing and animation for beginners. Explore the world of visual arts.");
   const [editorData, setEditorData] = useState("");
-  const [blogsTitle, setBlogsTitle] = useState("");
-  const [blogsCoverPic, setBlogsCoverPic] = useState("https://images.unsplash.com/photo-1613487957484-32c977a8bd62?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-
+  const [blogsTitle, setBlogsTitle] = useState("Learn Drawing & Animation: A Beginner's Guide to Creative Expression");
+  const [blogsContentType, setBlogsContentType] = useState("html");
+  const [blogsCoverPic, setBlogsCoverPic] = useState("");
+  const handleEditorChange = useCallback((data) => {
+    setEditorData(data);
+  }, []);
   // const handleSubmit = (e) => {
   //   e.preventDefault();
-  //   console.log({
-  //     blogsTitle,
-  //     blogsCoverPic,
-  //     editorData,
-  //     categories,
-  //     metaTitle,
-  //     metaDescription,
-  //     metaTags,
-  //   });
+  //   console.log(editorData);
+  //   // console.log({
+  //   //   blogsTitle,
+  //   //   blogsCoverPic,
+  //   //   editorData,
+  //   //   categories,
+  //   //   metaTitle,
+  //   //   metaDescription,
+  //   //   metaTags,
+  //   // });
   // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const blogData = {
       title: blogsTitle,
-      content: "editorData",
+      content: editorData,
       metaTitle,
       metaDescription,
       metaTags,
@@ -45,13 +50,15 @@ const Settings = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:5002/blogs",blogData, {
+      const response = await axios.post( `${process.env.NEXT_PUBLIC_API_URL}/blogs`,blogData, {
         headers: {
           "Content-Type": "application/json",
         }
       });
-      console.log("Blog posted successfully:", response.data);
+      toast.success("Blog posted successfully!");
+      // console.log("Blog posted successfully:", response.data);
     } catch (error) {
+      toast.error("Error posting blog");
       console.error("Error posting blog:", error);
     }
   };
@@ -72,13 +79,47 @@ const Settings = () => {
                 />
               </div>
               <div className="p-7">
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-5.5">
-                    <label className="mb-3 block font-bold text-lg text-black dark:text-white">
+                <div className="mb-5.5">
+                    <label className="mb-0 block font-bold text-lg text-black dark:text-white">
                       Content Section
                     </label>
-                    {/* <Editor data={editorData} onChange={(data) => setEditorData(data)} /> */}
-                  </div>
+                    <div className="flex flex-row flex-wrap gap-1 mb-2 justify-end">
+                    <button
+                    onClick={()=>setBlogsContentType('html')}
+                className={`text-gray-500 ${blogsContentType=='html'?'bg-gray-300':'bg-gray-100'} bg-gray-100 border-[1.34px] shadow-gray-2 border-gray-300 py-0.5 text-[0.55rem] lg:text-[0.65rem] font-medium px-2 rounded-[6px] font-impact-regular bg-opacity-45 shadow-2xl `}
+              >
+                Code
+              </button>
+                    <button
+                onClick={()=>setBlogsContentType('editor.js')}
+                className={`text-gray-500 ${blogsContentType=='editor.js'?'bg-gray-300':'bg-gray-100'} border-[1.34px] shadow-gray-2 border-gray-300 py-0.5 text-[0.55rem] lg:text-[0.65rem] font-medium px-2 rounded-[6px] font-impact-regular bg-opacity-45 shadow-2xl `}
+              >
+                Editor
+              </button>
+                    </div>
+                    </div>
+                <form onSubmit={handleSubmit}>
+                  <div >
+                  
+                    {
+                      blogsContentType === "editor.js" ? (
+                        <div className="mt-5.5">
+                          <Editor data={editorData} onChange={handleEditorChange} />
+                        </div>
+                      ): (
+                        <div className="mt-5.5  ">
+                        <textarea
+                         rows={20}
+                         className="w-full bg-gray-100 rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                          value={editorData}
+                          onChange={(e) => handleEditorChange(e.target.value)}
+                        />
+                      </div>
+                      )
+                        
+                    }
+                    {/* <Editor data={editorData} onChange={handleEditorChange} /> */}
+                    </div>
 
                   <div className="flex justify-end gap-4.5">
                     <button
@@ -163,7 +204,9 @@ const Settings = () => {
             </div>
           </div>
         </div>
+      <ToastContainer />
       </div>
+
     </DefaultLayout>
   );
 };

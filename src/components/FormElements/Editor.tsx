@@ -1,131 +1,49 @@
-import React, { useRef, useEffect } from 'react';
-import EditorJS from '@editorjs/editorjs';
-import ImageTool from '@editorjs/image'; 
-import EditorjsList from '@editorjs/list'; 
-import Header from '@editorjs/header'; 
-import Paragraph from '@editorjs/paragraph';  
-import Raw from '@editorjs/raw';  
-import Embed from '@editorjs/embed'; 
+import React, { useEffect, useRef } from "react";
+import EditorJS from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import List from "@editorjs/list";
+import RawTool from "@editorjs/raw";
+import ImageTool from "@editorjs/image";
 
-const Editor = ({ onChange, data }) => {
+const Editor = ({ data, onChange }) => {
+  const editorInstance = useRef(null);
   const editorRef = useRef(null);
-  let editorInstance = useRef(null);
 
   useEffect(() => {
     if (!editorInstance.current) {
       editorInstance.current = new EditorJS({
         holder: editorRef.current,
-        data: data || {}, // Initial data if any
-        tools: {
-          // Image Tool
-          image: {
-            class: ImageTool,
-            config: {
-              uploader: {
-                /**
-                 * Simulate the file upload process locally
-                 * @param {File} file - Selected image file
-                 * @returns {Promise}
-                 */
-                uploadByFile: (file) => {
-                  return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-
-                    // Read the file as a Data URL
-                    reader.onload = () => {
-                      resolve({
-                        success: 1,
-                        file: {
-                          url: reader.result, // Use base64 data URL as the image URL
-                        },
-                      });
-                    };
-
-                    reader.onerror = () => {
-                      reject(new Error('Error reading file.'));
-                    };
-
-                    reader.readAsDataURL(file); // Convert file to base64 URL
-                  });
-                },
-
-                /**
-                 * Handle image upload by URL
-                 * @param {string} url - Image URL
-                 * @returns {Promise}
-                 */
-                uploadByUrl: (url) => {
-                  return new Promise((resolve, reject) => {
-                    // Validate the URL (simple check, can be improved)
-                    if (url && url.startsWith('http')) {
-                      resolve({
-                        success: 1,
-                        file: {
-                          url, // Return the URL directly
-                        },
-                      });
-                    } else {
-                      reject(new Error('Invalid URL'));
-                    }
-                  });
-                },
-              },
-            },
-          },
-          // Header Tool
-          header: {
-            class: Header,
-            config: {
-              placeholder: 'Enter a heading',
-              levels: [1, 2, 3, 4, 5, 6], // Allow heading levels from H1 to H6
-              defaultLevel: 2,
-            },
-          },
-          // List Tool (Ordered/Unordered)
-          list: {
-            class: EditorjsList,
-            config: {
-              defaultStyle: 'unordered', // Default list type
-            },
-          },
-          // Paragraph Tool (For basic text paragraphs)
-          paragraph: {
-            class: Paragraph,
-          },
-          // Raw HTML Tool (For adding raw HTML code)
-          raw: {
-            class: Raw,
-          },
-          // Embed Tool (For embedding content from external sources like YouTube)
-          embed: {
-            class: Embed,
-            config: {
-              services: {
-                youtube: true,
-                twitter: true,
-                // Add other services if required
-              },
-            },
-          },
-        },
+        data,
         onChange: async () => {
           const savedData = await editorInstance.current.save();
           onChange(savedData);
+        },
+        tools: {
+          header: Header,
+          list: List,
+          raw: RawTool,
+          image: {
+            class: ImageTool,
+            config: {
+              endpoints: {
+                byFile: "http://localhost:5002/uploadFile", // Change this to your file upload endpoint
+                byUrl: "http://localhost:5002/fetchImage",   // Change this to your URL upload endpoint
+              },
+            },
+          },
         },
       });
     }
 
     return () => {
-      editorInstance.current = null;
+      if (editorInstance.current && typeof editorInstance.current.destroy === "function") {
+        editorInstance.current.destroy();
+        editorInstance.current = null;
+      }
     };
-  }, [onChange, data]);
+  }, []);
 
-  return (
-    <div
-      className="editor-js rounded border  border-stroke bg-gray/50 dark:bg-transparent"
-      ref={editorRef}
-    ></div>
-  );
+  return <div className="border-[1.5px] border-gray-300/80 bg-slate-300/35 rounded-lg shadow-lg lg:pl-3 py-3" ref={editorRef} />;
 };
 
 export default Editor;

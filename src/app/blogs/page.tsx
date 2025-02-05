@@ -22,7 +22,7 @@ import axios from "axios";
 const Settings = () => {
   const [blogData, setBlogData] = useState(null);
   const fetchBlogs = async () => {
-    const response = await axios.get(`http://localhost:5002/blogs`);
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/blogs/admin`);
     setBlogData(response.data);
 };
   useEffect(() => { fetchBlogs(); },[]);

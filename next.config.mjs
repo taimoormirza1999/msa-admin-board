@@ -7,10 +7,7 @@ const nextConfig = {
             protocol: 'https',
             hostname: '**',
           },
-         
-          
-          // Add more domains here if needed
-        ],
+          ],
       },
 };
 
