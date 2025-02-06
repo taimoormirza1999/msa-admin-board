@@ -16,39 +16,31 @@ import { useParams } from "next/navigation";
 const EditBlog = () => {
   const params = useParams();
   const id = params.id;
-  const [categories, setCategories] = useState(['Animation Courses']);
-  const [metaTags, setMetaTags] = useState(['Courses']);
-  const [metaTitle, setMetaTitle] = useState("Learn Drawing & Animation: A Beginner's Guide to Creative Expression");
-  const [metaDescription, setMetaDescription] = useState("Unleash your creative potential with our step-by-step guide on learning drawing and animation for beginners. Explore the world of visual arts.");
+  const [categories, setCategories] =  useState(['Animation Courses']);
+  const [metaTags, setMetaTags] = useState([]);
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
   const [editorData, setEditorData] = useState("");
-  const [blogsTitle, setBlogsTitle] = useState("Learn Drawing & Animation: A Beginner's Guide to Creative Expression");
-  const [blogsContentType, setBlogsContentType] = useState("html");
+  const [blogsTitle, setBlogsTitle] = useState("");
+  const [blogsContentType, setBlogsContentType] = useState("");
   const [blogsCoverPic, setBlogsCoverPic] = useState("");
   const [loading, setLoading] = useState(false);
   const handleEditorChange = useCallback((data) => {
     setEditorData(data);
   }, []);
   
-  function makefriendlyUrl(title: string){
-    const slug = title
-     .toString()
-     .toLowerCase()
-     .replace(/\s+/g, '-') 
-     .replace(/[^\w-]+/g, '') 
-     .replace(/--+/g, '-');
-    return slug;
-  }
+  
   const [blogData, setBlogData] = useState(null);
 
   const fetchBlogs = async () => {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/blogs/${id}`);
     setBlogData(response.data);
-    setCategories(response.data.categories)
-    setMetaTags(response.data)
+    setCategories(Array.isArray(response.data.categories) ? response.data.categories : []);
+    setMetaTags(response.data.metaTags)
     setMetaTitle(response.data.title)
-    setMetaDescription(response.data)
+    setMetaDescription(response.data.metaDescription)
     setEditorData(response.data.content)
-    setBlogsTitle(response.data)
+    setBlogsTitle(response.data.title)
     setBlogsContentType(response.data)
     setBlogsCoverPic(response.data.coverImage)
   };
@@ -58,7 +50,15 @@ const EditBlog = () => {
     fetchBlogs();
   }, []);
 
-
+  function makefriendlyUrl(title: string){
+    const slug = title
+     .toString()
+     .toLowerCase()
+     .replace(/\s+/g, '-') 
+     .replace(/[^\w-]+/g, '') 
+     .replace(/--+/g, '-');
+    return slug;
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     const friendlyUrl=makefriendlyUrl(blogsTitle);
