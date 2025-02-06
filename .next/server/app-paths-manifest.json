@@ -1,5 +1,7 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/blogs/page": "app/blogs/page.js",
   "/blogs/add-new-blog/page": "app/blogs/add-new-blog/page.js",
-  "/blogs/page": "app/blogs/page.js"
+  "/blogs/edit-blog/[id]/page": "app/blogs/edit-blog/[id]/page.js"
 }

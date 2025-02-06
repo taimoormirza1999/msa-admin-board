@@ -4,22 +4,23 @@ import Image from "next/image";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import InputField from "@/components/FormElements/InputField";
 import MultipleValueTextInput from "@/components/FormElements/MultipleValueTextInput";
-import React, { useState,useCallback } from "react";
+import React, { useState,useCallback, FormEvent } from "react";
 import FileUploadInput from "@/components/FormElements/FileUploadInput";
 import Editor from "@/components/FormElements/Editor";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const Settings = () => {
-  const [categories, setCategories] = useState(['Animation Courses']);
-  const [metaTags, setMetaTags] = useState(['Courses']);
+  const [metaTags, setMetaTags] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  
   const [metaTitle, setMetaTitle] = useState("Learn Drawing & Animation: A Beginner's Guide to Creative Expression");
   const [metaDescription, setMetaDescription] = useState("Unleash your creative potential with our step-by-step guide on learning drawing and animation for beginners. Explore the world of visual arts.");
   const [editorData, setEditorData] = useState("");
   const [blogsTitle, setBlogsTitle] = useState("Learn Drawing & Animation: A Beginner's Guide to Creative Expression");
   const [blogsContentType, setBlogsContentType] = useState("html");
   const [blogsCoverPic, setBlogsCoverPic] = useState("");
-  const handleEditorChange = useCallback((data) => {
+  const handleEditorChange = useCallback((data:string)=> {
     setEditorData(data);
   }, []);
   // const handleSubmit = (e) => {
@@ -35,7 +36,7 @@ const Settings = () => {
   //   //   metaTags,
   //   // });
   // };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:FormEvent) => {
     e.preventDefault();
     const blogData = {
       title: blogsTitle,
@@ -192,9 +193,9 @@ const Settings = () => {
                       label="Meta Tags"
                       name="metaTags"
                       placeholder="Separate with comma or enter."
-                      values={metaTags}
-                      onItemAdded={(value) => setMetaTags([...metaTags, value])}
-                      onItemDeleted={(value) => setMetaTags(metaTags.filter((item) => item !== value))}
+                      values={metaTags:[string]}
+                      onItemAdded={(value: string) => setMetaTags([...metaTags, value])}
+                      onItemDeleted={(value:string) => setMetaTags(metaTags.filter((item) => item !== value))}
                     />
                   </div>
                 </form>

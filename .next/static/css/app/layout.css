@@ -1345,6 +1345,9 @@ body{
 .border-\[1\.5px\]{
   border-width: 1.5px;
 }
+.border-\[3px\]{
+  border-width: 3px;
+}
 .border-b{
   border-bottom-width: 1px;
 }

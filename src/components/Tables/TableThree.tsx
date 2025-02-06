@@ -8,7 +8,7 @@ const TableThree = ({ blogData }) => {
   const textColor = ["text-blue-500", "text-pink-500", "text-indigo-500"];
   const colors = ["bg-blue-500", "bg-pink-500", "bg-indigo-500"];
   const shadows = ["shadow-blue-500", "shadow-pink-500", "shadow-indigo-500"];
-  const deleteBlogs = async (blogItemId) => {
+  const deleteBlogs = async (blogItemId, fetchBlogs) => {
    
     try {
       const response = await axios.delete( `${process.env.NEXT_PUBLIC_API_URL}/blogs/${blogItemId}`, {
@@ -19,6 +19,7 @@ const TableThree = ({ blogData }) => {
 
       if (response.status === 200) {
         toast.success("Blog deleted successfully!");
+        fetchBlogs();
       } else {
         toast.error("Failed to delete blog. Please try again.");
       }
@@ -27,6 +28,7 @@ const TableThree = ({ blogData }) => {
       toast.error("An error occurred while deleting the blog.");
     }
   };
+
   return (
     <div className="rounded border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -85,7 +87,7 @@ const TableThree = ({ blogData }) => {
                     width={80}
                     height={80}
                     alt="product"
-                  />
+                  /> 
                  </a>
                 </td>
                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
@@ -168,9 +170,11 @@ const TableThree = ({ blogData }) => {
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium capitalize ${
-                      blogItem?.status === "Published"
+                      blogItem?.status === "published"
                         ? "bg-success text-success"
-                        : blogItem?.status === "stopped"
+                        : blogItem?.status === "pending"
+                          ? "bg-blue-500 text-blue-500"
+                           : blogItem?.status === "stopped"
                           ? "bg-danger text-danger"
                           : "bg-warning text-warning"
                     }`}
@@ -199,7 +203,9 @@ const TableThree = ({ blogData }) => {
 
                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary">
+                    <a href={`https://msa-club.com/blog/${blogItem?._id}`}target="_blank" className="hover:text-primary cursor-pointer" onClick={() => {
+                      
+                      }}>
                       <svg
                         className="fill-current"
                         width="18"
@@ -217,8 +223,8 @@ const TableThree = ({ blogData }) => {
                           fill=""
                         />
                       </svg>
-                    </button>
-                    <button
+                    </a>
+                    <a
                       className="hover:text-primary"
                       onClick={() => {
                         deleteBlogs(blogItem?._id);
@@ -249,26 +255,12 @@ const TableThree = ({ blogData }) => {
                           fill=""
                         />
                       </svg>
-                    </button>
-                    <button className="hover:text-primary">
-                      <svg
-                        className="fill-current"
-                        width="18"
+                    </a>
+                    <a  href={`blogs/edit-blog/${blogItem?._id}`}  className="hover:text-primary">
+                   <svg className="feather feather-edit" fill="none"  
                         height="18"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M16.8754 11.6719C16.5379 11.6719 16.2285 11.9531 16.2285 12.3187V14.8219C16.2285 15.075 16.0316 15.2719 15.7785 15.2719H2.22227C1.96914 15.2719 1.77227 15.075 1.77227 14.8219V12.3187C1.77227 11.9812 1.49102 11.6719 1.12539 11.6719C0.759766 11.6719 0.478516 11.9531 0.478516 12.3187V14.8219C0.478516 15.7781 1.23789 16.5375 2.19414 16.5375H15.7785C16.7348 16.5375 17.4941 15.7781 17.4941 14.8219V12.3187C17.5223 11.9531 17.2129 11.6719 16.8754 11.6719Z"
-                          fill=""
-                        />
-                        <path
-                          d="M8.55074 12.3469C8.66324 12.4594 8.83199 12.5156 9.00074 12.5156C9.16949 12.5156 9.31012 12.4594 9.45074 12.3469L13.4726 8.43752C13.7257 8.1844 13.7257 7.79065 13.5007 7.53752C13.2476 7.2844 12.8539 7.2844 12.6007 7.5094L9.64762 10.4063V2.1094C9.64762 1.7719 9.36637 1.46252 9.00074 1.46252C8.66324 1.46252 8.35387 1.74377 8.35387 2.1094V10.4063L5.40074 7.53752C5.14762 7.2844 4.75387 7.31252 4.50074 7.53752C4.24762 7.79065 4.27574 8.1844 4.50074 8.43752L8.55074 12.3469Z"
-                          fill=""
-                        />
-                      </svg>
-                    </button>
+                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </a>
                   </div>
                 </td>
               </tr>

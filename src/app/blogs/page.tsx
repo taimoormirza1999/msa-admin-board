@@ -70,7 +70,7 @@ const Settings = () => {
         <div className="">
           <div className="w-full">
             <div className="rounded border w-full border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <TableThree blogData={blogData}/>
+            <TableThree blogData={blogData} fetchBlogs={fetchBlogs}/>
             </div>
           </div>
           

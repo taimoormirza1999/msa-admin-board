@@ -60,7 +60,7 @@ const Header = (props: {
             <Image
               width={32}
               height={32}
-              src={"/images/logo/logo-icon.svg"}
+              src={"https://msa-club.com/_next/static/media/logo.ced7c37e.png"}
               alt="Logo"
             />
           </Link>

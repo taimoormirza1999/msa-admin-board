@@ -11,7 +11,10 @@ interface SettingsLayoutProps {
   }
 
   const SettingsLayout: React.FC<SettingsLayoutProps> = ({ children }) => {
-    return <div>{children}</div>;
+    return <div className='taimoor__'>{children}</div>;
   };
   
   export default SettingsLayout;
+
+
+  
