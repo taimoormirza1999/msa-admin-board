@@ -1,43 +1,44 @@
 'use client'; 
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import Image from "next/image";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import InputField from "@/components/FormElements/InputField";
-import MultipleValueTextInput from "@/components/FormElements/MultipleValueTextInput";
-import React, { useState,useCallback, FormEvent } from "react";
-import FileUploadInput from "@/components/FormElements/FileUploadInput";
-import Editor from "@/components/FormElements/Editor";
+import InputField from "../../../components/FormElements/InputField";
+import MultipleValueTextInput from "../../../components/FormElements/MultipleValueTextInput";
+import React, { useState,useCallback } from "react";
+import FileUploadInput from "../../../components/FormElements/FileUploadInput";
+import Editor from "../../../components/FormElements/Editor";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DefaultLayout from "../../../components/Layouts/DefaultLayout";
+import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 const Settings = () => {
-  const [metaTags, setMetaTags] = useState<string[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  
+  const [categories, setCategories] = useState(['Animation Courses']);
+  const [metaTags, setMetaTags] = useState(['Courses']);
   const [metaTitle, setMetaTitle] = useState("Learn Drawing & Animation: A Beginner's Guide to Creative Expression");
   const [metaDescription, setMetaDescription] = useState("Unleash your creative potential with our step-by-step guide on learning drawing and animation for beginners. Explore the world of visual arts.");
   const [editorData, setEditorData] = useState("");
   const [blogsTitle, setBlogsTitle] = useState("Learn Drawing & Animation: A Beginner's Guide to Creative Expression");
   const [blogsContentType, setBlogsContentType] = useState("html");
   const [blogsCoverPic, setBlogsCoverPic] = useState("");
-  const handleEditorChange = useCallback((data:string)=> {
+  const [loading, setLoading] = useState(false);
+  const handleEditorChange = useCallback((data) => {
     setEditorData(data);
   }, []);
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(editorData);
-  //   // console.log({
-  //   //   blogsTitle,
-  //   //   blogsCoverPic,
-  //   //   editorData,
-  //   //   categories,
-  //   //   metaTitle,
-  //   //   metaDescription,
-  //   //   metaTags,
-  //   // });
-  // };
-  const handleSubmit = async (e:FormEvent) => {
+  
+  function makefriendlyUrl(title: string){
+    const slug = title
+     .toString()
+     .toLowerCase()
+     .replace(/\s+/g, '-') 
+     .replace(/[^\w-]+/g, '') 
+     .replace(/--+/g, '-');
+    return slug;
+  }
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const friendlyUrl=makefriendlyUrl(blogsTitle);
+
+    const toastId = toast.loading("Blog Saving...");
+    setLoading(true);
     const blogData = {
       title: blogsTitle,
       content: editorData,
@@ -48,6 +49,7 @@ const Settings = () => {
       postedBy: "Taimoor",
       postedDate: new Date().toISOString(),
       categories,
+      friendlyUrl,
     };
 
     try {
@@ -56,12 +58,25 @@ const Settings = () => {
           "Content-Type": "application/json",
         }
       });
-      toast.success("Blog posted successfully!");
+      setLoading(false);
+      toast.update(toastId, {
+        render: "Blog posted successfully!",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000, // Automatically close after 3 seconds
+      });
       // console.log("Blog posted successfully:", response.data);
     } catch (error) {
-      toast.error("Error posting blog");
+      setLoading(false);
+      toast.update(toastId, {
+        render: "Error posting blog!",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
       console.error("Error posting blog:", error);
     }
+  
   };
   return (
     <DefaultLayout>
@@ -80,9 +95,7 @@ const Settings = () => {
                 />
               </div>
               <div className="p-7">
-                
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-5.5">
+                <div className="mb-5.5">
                     <label className="mb-0 block font-bold text-lg text-black dark:text-white">
                       Content Section
                     </label>
@@ -100,6 +113,10 @@ const Settings = () => {
                 Editor
               </button>
                     </div>
+                    </div>
+                <form onSubmit={handleSubmit}>
+                  <div >
+                  
                     {
                       blogsContentType === "editor.js" ? (
                         <div className="mt-5.5">
@@ -114,8 +131,7 @@ const Settings = () => {
                           onChange={(e) => handleEditorChange(e.target.value)}
                         />
                       </div>
-                      )
-                        
+                      )  
                     }
                     {/* <Editor data={editorData} onChange={handleEditorChange} /> */}
                     </div>
@@ -128,10 +144,12 @@ const Settings = () => {
                       Cancel
                     </button>
                     <button
-                      className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-black-2 transition-all duration-300 ease-in-out"
+                      className="cursor-pointer flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-black-2 transition-all duration-300 ease-in-out"
                       type="submit"
-                    >
-                      Save
+                    >      
+                    {loading&&<div className="spinner-border animate-spin h-5 w-5 border-[3px] border-t-transparent border-white rounded-full mr-2" />}
+                     {loading?"Saving....":"Save"} 
+                  
                     </button>
                   </div>
                 </form>
@@ -193,9 +211,9 @@ const Settings = () => {
                       label="Meta Tags"
                       name="metaTags"
                       placeholder="Separate with comma or enter."
-                      values={metaTags:[string]}
-                      onItemAdded={(value: string) => setMetaTags([...metaTags, value])}
-                      onItemDeleted={(value:string) => setMetaTags(metaTags.filter((item) => item !== value))}
+                      values={metaTags}
+                      onItemAdded={(value) => setMetaTags([...metaTags, value])}
+                      onItemDeleted={(value) => setMetaTags(metaTags.filter((item) => item !== value))}
                     />
                   </div>
                 </form>

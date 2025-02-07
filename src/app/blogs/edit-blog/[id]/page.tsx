@@ -1,17 +1,16 @@
 'use client'; 
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import Image from "next/image";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import InputField from "@/components/FormElements/InputField";
-import MultipleValueTextInput from "@/components/FormElements/MultipleValueTextInput";
+import MultipleValueTextInput from "../../../../components/FormElements/MultipleValueTextInput";
 import React, { useState,useCallback, useEffect } from "react";
-import FileUploadInput from "@/components/FormElements/FileUploadInput";
-import Editor from "@/components/FormElements/Editor";
+import FileUploadInput from "../../../../components/FormElements/FileUploadInput";
+import Editor from "../../../../components/FormElements/Editor";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useRouter } from 'next/router'
+import DefaultLayout from "../../../../components/Layouts/DefaultLayout";
+import Breadcrumb from "../../../../components/Breadcrumbs/Breadcrumb";
+
 import { useParams } from "next/navigation";
+import InputField from "../../../../components/FormElements/InputField";
 
 const EditBlog = () => {
   const params = useParams();
@@ -32,7 +31,7 @@ const EditBlog = () => {
   
   const [blogData, setBlogData] = useState(null);
 
-  const fetchBlogs = async () => {
+  const fetchBlogs = useCallback( async () => {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/blogs/${id}`);
     setBlogData(response.data);
     setCategories(Array.isArray(response.data.categories) ? response.data.categories : []);
@@ -41,14 +40,23 @@ const EditBlog = () => {
     setMetaDescription(response.data.metaDescription)
     setEditorData(response.data.content)
     setBlogsTitle(response.data.title)
-    setBlogsContentType(response.data)
+    // setBlogsContentType(response.data)
     setBlogsCoverPic(response.data.coverImage)
-  };
+    // alert()
+  //  for (const blog of response.data.categories){
+  //    console.log(blog)
+
+  //   //  setCategories([...categories, blog])
+  //  }
+  // console.log(categories)
+  alert("d")
+    // console.log(response.data.categories?.[0])
+  }, [id]);
 
   useEffect(() => {
-    alert(`${process.env.NEXT_PUBLIC_API_URL}/blogs/${id}`)
-    fetchBlogs();
-  }, []);
+    // alert(`${process.env.NEXT_PUBLIC_API_URL}/blogs/${id}`)
+    if (id) fetchBlogs();
+  }, [id]);
 
   function makefriendlyUrl(title: string){
     const slug = title

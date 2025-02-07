@@ -1,6 +1,19 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/blogs/page": "app/blogs/page.js",
+  "/calendar/page": "app/calendar/page.js",
+  "/chart/page": "app/chart/page.js",
+  "/page": "app/page.js",
+  "/auth/signin/page": "app/auth/signin/page.js",
+  "/forms/form-elements/page": "app/forms/form-elements/page.js",
+  "/tables/page": "app/tables/page.js",
+  "/auth/signup/page": "app/auth/signup/page.js",
+  "/forms/form-layout/page": "app/forms/form-layout/page.js",
+  "/ui/alerts/page": "app/ui/alerts/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/ui/buttons/page": "app/ui/buttons/page.js",
   "/blogs/add-new-blog/page": "app/blogs/add-new-blog/page.js",
-  "/blogs/edit-blog/[id]/page": "app/blogs/edit-blog/[id]/page.js"
+  "/blogs/add-new-blog-ai/page": "app/blogs/add-new-blog-ai/page.js",
+  "/blogs/edit-blog/[id]/page": "app/blogs/edit-blog/[id]/page.js",
+  "/blogs/page": "app/blogs/page.js"
 }

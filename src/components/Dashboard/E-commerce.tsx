@@ -7,11 +7,11 @@ import ChatCard from "../Chat/ChatCard";
 import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
 
-const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
+const MapOne = dynamic(() => import("../Maps/MapOne"), {
   ssr: false,
 });
 
-const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
+const ChartThree = dynamic(() => import("../Charts/ChartThree"), {
   ssr: false,
 });
 

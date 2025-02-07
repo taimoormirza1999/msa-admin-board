@@ -1,15 +1,16 @@
-import { Package } from "@/types/package";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
-
-const TableThree = ({ blogData }) => {
+interface TableThreeProps {
+  blogData: any;
+  fetchBlogs: () => Promise<void>; // ✅ Add this
+}
+const TableThree: React.FC<TableThreeProps> = ({ blogData, fetchBlogs }) => {
   const textColor = ["text-blue-500", "text-pink-500", "text-indigo-500"];
   const colors = ["bg-blue-500", "bg-pink-500", "bg-indigo-500"];
   const shadows = ["shadow-blue-500", "shadow-pink-500", "shadow-indigo-500"];
-  const deleteBlogs = async (blogItemId, fetchBlogs) => {
-   
+  const deleteBlogs = async(blogItemId)=>{
     try {
       const response = await axios.delete( `${process.env.NEXT_PUBLIC_API_URL}/blogs/${blogItemId}`, {
         headers: {

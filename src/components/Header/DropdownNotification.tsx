@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import ClickOutside from "@/components/ClickOutside";
+import ClickOutside from "../ClickOutside";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

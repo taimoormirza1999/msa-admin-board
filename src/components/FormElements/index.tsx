@@ -1,18 +1,18 @@
 "use client";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import CheckboxFive from "@/components/Checkboxes/CheckboxFive";
-import CheckboxFour from "@/components/Checkboxes/CheckboxFour";
-import CheckboxOne from "@/components/Checkboxes/CheckboxOne";
-import CheckboxThree from "@/components/Checkboxes/CheckboxThree";
-import CheckboxTwo from "@/components/Checkboxes/CheckboxTwo";
-import SwitcherFour from "@/components/Switchers/SwitcherFour";
-import SwitcherOne from "@/components/Switchers/SwitcherOne";
-import SwitcherThree from "@/components/Switchers/SwitcherThree";
-import SwitcherTwo from "@/components/Switchers/SwitcherTwo";
-import DatePickerTwo from "@/components/FormElements/DatePicker/DatePickerTwo";
-import DatePickerOne from "@/components/FormElements/DatePicker/DatePickerOne";
-import MultiSelect from "@/components/FormElements/MultiSelect";
-import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
+import CheckboxFive from "../Checkboxes/CheckboxFive";
+import CheckboxFour from "../Checkboxes/CheckboxFour";
+import CheckboxOne from "../Checkboxes/CheckboxOne";
+import CheckboxThree from "../Checkboxes/CheckboxThree";
+import CheckboxTwo from "../Checkboxes/CheckboxTwo";
+import SwitcherFour from "../Switchers/SwitcherFour";
+import SwitcherOne from "../Switchers/SwitcherOne";
+import SwitcherThree from "../Switchers/SwitcherThree";
+import SwitcherTwo from "../Switchers/SwitcherTwo";
+import DatePickerTwo from "../FormElements/DatePicker/DatePickerTwo";
+import DatePickerOne from "../FormElements/DatePicker/DatePickerOne";
+import MultiSelect from "../FormElements/MultiSelect";
+import SelectGroupTwo from "../SelectGroup/SelectGroupTwo";
+import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 
 const FormElements = () => {
   return (

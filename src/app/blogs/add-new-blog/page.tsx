@@ -1,15 +1,14 @@
 'use client'; 
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import Image from "next/image";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import InputField from "@/components/FormElements/InputField";
-import MultipleValueTextInput from "@/components/FormElements/MultipleValueTextInput";
+import InputField from "../../../components/FormElements/InputField";
+import MultipleValueTextInput from "../../../components/FormElements/MultipleValueTextInput";
 import React, { useState,useCallback } from "react";
-import FileUploadInput from "@/components/FormElements/FileUploadInput";
-import Editor from "@/components/FormElements/Editor";
+import FileUploadInput from "../../../components/FormElements/FileUploadInput";
+import Editor from "../../../components/FormElements/Editor";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DefaultLayout from "../../../components/Layouts/DefaultLayout";
+import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 const Settings = () => {
   const [categories, setCategories] = useState(['Animation Courses']);
   const [metaTags, setMetaTags] = useState(['Courses']);
